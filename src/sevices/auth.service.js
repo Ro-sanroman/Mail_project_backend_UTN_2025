@@ -41,7 +41,7 @@ class AuthService {
   
     const verification_token = jwt.sign({ user_id: user_id_created }, ENVIRONMENT.JWT_SECRET);
 
-    const verificationLink = `http://localhost:${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email/${verification_token}`;
+    const verificationLink = `${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email/${verification_token}`;
     const mailOptions = {
       from: ENVIRONMENT.GMAIL_USER,
       to: email,
