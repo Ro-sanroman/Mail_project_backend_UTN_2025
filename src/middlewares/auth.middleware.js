@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 function authMiddleware(request, response, next) {
     try {
-        const auth_header = request.headers.authorization
+       const auth_header = request.headers.authorization
         if (!auth_header) {
             throw new ServerError(401, 'No hay header de autorizacion')
         }
@@ -12,12 +12,6 @@ function authMiddleware(request, response, next) {
         const auth_token = auth_header.split(' ')[1]
         if (!auth_token) {
             throw new ServerError(401, 'No hay token de autorizacion')
-        }
-
-        // Asegurarnos de que la secret esté configurada en el entorno
-        if (!ENVIRONMENT.JWT_SECRET) {
-            // Lanzar un error con status para que el catch lo devuelva correctamente
-            throw new ServerError(500, 'JWT_SECRET no configurado en el servidor')
         }
 
         const user_session_data = jwt.verify(auth_token, ENVIRONMENT.JWT_SECRET)
