@@ -104,45 +104,48 @@ class AuthService {
     }
   }
 
-  static async login(email, password) {
-    if (!email || !password) {
-      throw new ServerError(400, 'Email y password son obligatorios');
+static async login (email, password){
+        /* 
+        -Buscar al usuario por email
+        -Validar que exista
+        -Validar que este verificado su mail
+        -Comparar la password recibida con la del usuario
+        -Genera un token con datos de sesion del usuario y responderlo
+        */
+
+        const user_found = await UserRepository.getByEmail(email)
+        
+        if(!user_found) {
+            throw new ServerError(404, 'Usuario con este mail no encontrado')
+        }
+        
+        if(!user_found.verified_email){
+            throw new ServerError(401, 'Usuario con mail no verificado')
+        }
+
+        const is_same_passoword = await bcrypt.compare( password, user_found.password )
+        if(!is_same_passoword){
+            throw new ServerError(401, 'Contraseña invalida')
+        }
+
+        //creo un token con datos de sesion (DATOS NO SENSIBLES)
+        const auth_token = jwt.sign(
+            {
+                name: user_found.name,
+                email: user_found.email,
+                id: user_found._id,
+            },
+            ENVIRONMENT.JWT_SECRET,
+            {
+                expiresIn: '24h'
+            }
+        )
+
+        return {
+            auth_token: auth_token
+        }
     }
-
-    const user_found = await UserRepository.getByEmail(email);
-
-    if (!user_found) {
-      throw new ServerError(404, "Usuario con este mail no encontrado");
-    }
-
-    if (!user_found.verified_email) {
-      throw new ServerError(401, "Usuario con mail no verificado");
-    }
-
-    const is_same_passoword = await bcrypt.compare(
-      password,
-      user_found.password
-    );
-    if (!is_same_passoword) {
-      throw new ServerError(401, "Contraseña invalida");
-    }
-
-    //creo un token con datos de sesion (DATOS NO SENSIBLES)
-    const auth_token = jwt.sign(
-      {
-        name: user_found.name,
-        email: user_found.email,
-        id: user_found.id,
-      },
-      ENVIRONMENT.JWT_SECRET
-    );
-
-    return {
-      auth_token: auth_token,
-    };
-  }
 }
-
 export default AuthService;
 
 /* 

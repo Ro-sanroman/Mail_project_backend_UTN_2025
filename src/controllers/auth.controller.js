@@ -43,14 +43,27 @@ class AuthController {
       const { verification_token } = request.params;
 
       await AuthService.verifyEmail(verification_token);
-      response.redirect(ENVIRONMENT.URL_FRONTEND + '/login?from=verified_email');
-    } catch (error) {
-      if (error.status) {
-        response.send(`<h1>${error.message}</h1>`);
-      } else {
-        console.error('ERROR AL VERIFICAR', error);
-        response.send(`<h1>Error en el servidor, intentelo mas tarde</h1>`);
+      // Si la petición viene de un navegador (click desde mail) redirigimos al frontend,
+      // si viene por API (Accept: application/json) devolvemos JSON
+      const accept = request.headers.accept || ''
+      if (accept.includes('application/json')) {
+        return response.json({ ok: true, message: 'Email verificado', status: 200 })
       }
+      return response.redirect(ENVIRONMENT.URL_FRONTEND + '/login?from=verified_email');
+    } catch (error) {
+      // Devolver JSON cuando corresponda para evitar que el cliente intente parsear HTML
+      const accept = request.headers.accept || ''
+      if (error.status) {
+        if (accept.includes('application/json')) {
+          return response.status(error.status).json({ ok: false, message: error.message, status: error.status })
+        }
+        return response.status(error.status).send(`<h1>${error.message}</h1>`);
+      }
+      console.error('ERROR AL VERIFICAR', error);
+      if (accept.includes('application/json')) {
+        return response.status(500).json({ ok: false, message: 'Error en el servidor, intentelo mas tarde', status: 500 })
+      }
+      return response.status(500).send(`<h1>Error en el servidor, intentelo mas tarde</h1>`);
     }
   }
 

@@ -3,11 +3,12 @@ import MemberWorkspace from "../models/MemberWorkspace.model.js";
 class MemberWorkspaceRepository {
     static async create(user_id, workspace_id, role) {
         try {
-            await MemberWorkspace.insertOne({
-                user_id: user_id,
-                workspace_id: workspace_id,
+            const newMember = await MemberWorkspace.create({
+                id_user: user_id,
+                id_workspace: workspace_id,
                 role: role
             })
+            return newMember
         }
         catch (error) {
             console.error('[SERVER ERROR]: no se pudo crear el miembro de workspace', error);
@@ -54,6 +55,31 @@ class MemberWorkspaceRepository {
                 console.error('[SERVER ERROR]: no se pudo actualizar el miembro', error)
                 throw error
             }
+        }
+    }
+    static async getByUserIdAndWorkspaceId(user_id, workspace_id) {
+        try {
+            const member = await MemberWorkspace.findOne({
+                id_user: user_id,
+                id_workspace: workspace_id
+            })
+            return member
+        }
+        catch (error) {
+            console.error('[SERVER ERROR]: no se pudo obtener el miembro con user_id y workspace_id', error)
+            throw error
+        }
+    }
+    static async getAllByUserId(user_id) {
+        try {
+            const members = await MemberWorkspace.find({
+                id_user: user_id
+            })
+            return members
+        }
+        catch (error) {
+            console.error('[SERVER ERROR]: no se pudo obtener los miembros por user_id', error)
+            throw error
         }
     }
 }

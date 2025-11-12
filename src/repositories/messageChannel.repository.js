@@ -3,12 +3,12 @@ import MessageChannel from "../models/MessageChannel.model.js";
 class MessagesChannelRepository{
     static async create(chanel_id, sender_member_id, content) {
         try {
-            await MessageChannel.insertOne({
+            const newMessage = await MessageChannel.create({
                 chanel_id:chanel_id,
                 sender_member_id:sender_member_id,
                 content:content
             })
-            
+            return newMessage
         }
         catch (error) {
             console.error('[SERVER ERROR]: no se pudo crear la mensajeria', error);

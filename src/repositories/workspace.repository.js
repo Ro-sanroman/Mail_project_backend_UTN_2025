@@ -3,10 +3,11 @@ import Workspace from "../models/Workspace.model.js";
 class WorkspaceRepository {
     static async create(name, url_image) {
         try {
-            await Workspace.insertOne({
+            const newWorkspace = await Workspace.create({
                 name: name,
                 url_image: url_image
             })
+            return newWorkspace
         }
         catch (error) {
             console.error('[SERVER ERROR]: no se pudo crear el workspace', error);
