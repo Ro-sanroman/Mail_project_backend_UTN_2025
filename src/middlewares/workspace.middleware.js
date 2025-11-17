@@ -15,14 +15,19 @@ function workspaceMiddleware(valid_member_roles = []) {
             const { workspace_id } = request.params
             const user = request.user
 
+            console.log('[workspaceMiddleware] workspace_id recibido:', workspace_id)
+            console.log('[workspaceMiddleware] user.id:', user.id)
+
             //Checkear que el workspace con x ID exista
             const workspace_selected = await WorkspaceRepository.getById(workspace_id)
+            console.log('[workspaceMiddleware] workspace_selected:', workspace_selected ? 'ENCONTRADO' : 'NO ENCONTRADO')
             if (!workspace_selected) {
                 throw new ServerError(404, 'Workspace no encontrado')
             }
 
             //Checkear si el cliente es un miembro de ese workspace
             const member = await MemberWorkspaceRepository.getByUserIdAndWorkspaceId(user.id, workspace_id)
+            console.log('[workspaceMiddleware] member:', member ? 'ENCONTRADO' : 'NO ENCONTRADO')
             if (!member) {
                 throw new ServerError(403, 'No tienes acceso a este espacio de trabajo')
             }

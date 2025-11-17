@@ -40,6 +40,14 @@ function authMiddleware(request, response, next) {
             throw new ServerError(500, 'JWT_SECRET no configurado en el servidor')
         }
 
+        // Log temporal: decodificar el token sin verificar para ver iat/exp y estructura
+        try {
+            const decoded = jwt.decode(auth_token, { complete: true });
+            console.log('[authMiddleware] Token decodificado (sin verificar):', JSON.stringify(decoded, null, 2));
+        } catch (e) {
+            console.error('[authMiddleware] Error al decodificar token:', e);
+        }
+
         console.log('[authMiddleware] Verificando token...')
         const user_session_data = jwt.verify(auth_token, ENVIRONMENT.JWT_SECRET)
         console.log('[authMiddleware] Token verificado exitosamente')

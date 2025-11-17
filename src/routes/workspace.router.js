@@ -47,6 +47,14 @@ body: {
 */
 
 
+// GET /api/workspace/:workspace_id - Obtener detalles del workspace por ID
+workspaceRouter.get(
+    '/:workspace_id',
+    authMiddleware,
+    workspaceMiddleware(),
+    WorkspaceController.getById
+)
+
 workspaceRouter.get(
     '/:workspace_id/channels',
     authMiddleware,

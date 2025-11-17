@@ -56,5 +56,29 @@ class MessagesChannelRepository{
             throw error
         }
     }
+
+    static async getAllByChannelId (channel_id){
+        const messages = await MessageChannel.find({channel_id: channel_id})
+        .populate({
+            path: 'sender_member_id',
+            populate: {
+                path: 'id_user',
+                model: "User",
+                select: 'name _id'
+            }
+        })
+
+        const messages_formatted = messages.map(
+            (message) => {
+                return {
+                    _id: message._id,
+                    message_content: message.content,
+                    member_id: message.sender_member_id._id,
+                    user_name: message.sender_member_id.id_user.name
+                }
+            }
+        )
+        return messages_formatted
+    }
 }
 export default MessagesChannelRepository
