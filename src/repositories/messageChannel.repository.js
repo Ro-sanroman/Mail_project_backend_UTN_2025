@@ -1,10 +1,10 @@
 import MessageChannel from "../models/MessageChannel.model.js";
 
 class MessagesChannelRepository{
-    static async create(chanel_id, sender_member_id, content) {
+    static async create(channel_id, sender_member_id, content) {
         try {
             const newMessage = await MessageChannel.create({
-                chanel_id:chanel_id,
+                channel_id:channel_id,
                 sender_member_id:sender_member_id,
                 content:content
             })

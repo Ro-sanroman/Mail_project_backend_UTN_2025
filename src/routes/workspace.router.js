@@ -91,7 +91,7 @@ workspaceRouter.get(
 )
 
 
-workspaceRouter.get(
+/*workspaceRouter.get(
     '/:workspace_id/test',
     authMiddleware,
     workspaceMiddleware(),
@@ -105,7 +105,7 @@ workspaceRouter.get(
         })
     }
 )
-
+*/
 
 workspaceRouter.post(
     '/:workspace_id/invite', 
