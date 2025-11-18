@@ -73,3 +73,6 @@ Servidor corriendo en puerto 8080
 [PETICION RECIBIDA] GET /api/workspace/691b1a14bda21ce30769820c/channels/691b1dd63eff15ba7ad9b3ce/messages
 [PETICION RECIBIDA] POST /api/workspace/691b1a14bda21ce30769820c/channels/691b1dd63eff15ba7ad9b3ce/messages
 [PETICION RECIBIDA] GET /api/workspace/691b1a14bda21ce30769820c/channels/691b1dd63eff15ba7ad9b3ce/messages
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
