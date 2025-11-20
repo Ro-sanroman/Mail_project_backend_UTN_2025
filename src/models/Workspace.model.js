@@ -1,12 +1,12 @@
-import moongoose from "mongoose";
+import mongoose from "mongoose";
 
-const workspaceSchema = new moongoose.Schema(
+const workspaceSchema = new mongoose.Schema(
     {
         name: {
             type: String,
             required: true
         },
-        url_image: {
+        url_img: {
             type: String,
         },
         created_at: {
@@ -25,6 +25,6 @@ const workspaceSchema = new moongoose.Schema(
     }
 )
 
-const Workspace = moongoose.model('Workspace', workspaceSchema)
+const Workspace = mongoose.model('Workspace', workspaceSchema)
 
 export default Workspace

@@ -54,6 +54,53 @@ class WorkspaceRepository {
             throw error
         }
     }
+    static async getManyByIds(workspace_ids) {
+        try {
+            // Si no hay IDs, retornar array vacío
+            if (!workspace_ids || workspace_ids.length === 0) {
+                console.log('[WorkspaceRepository] getManyByIds: No hay IDs, retornando array vacío')
+                return []
+            }
+            
+            console.log('[WorkspaceRepository] getManyByIds: Buscando', workspace_ids.length, 'workspaces')
+            console.log('[WorkspaceRepository] getManyByIds: IDs recibidos:', workspace_ids)
+            
+            // Asegurarse de que los IDs sean válidos ObjectIds de MongoDB
+            // Convertir a string y luego validar si es necesario
+            const validIds = workspace_ids
+                .filter(id => id != null && id !== undefined)
+                .map(id => {
+                    // Si es un ObjectId de Mongoose, mantenerlo como está
+                    // Si es un string, Mongoose lo convertirá automáticamente
+                    return id
+                })
+            
+            if (validIds.length === 0) {
+                console.log('[WorkspaceRepository] getManyByIds: No hay IDs válidos después del filtrado')
+                return []
+            }
+            
+            console.log('[WorkspaceRepository] getManyByIds: IDs válidos:', validIds.length)
+            
+            const workspaces = await Workspace.find({ 
+                _id: { $in: validIds },
+                $or: [
+                    { active: true },
+                    { active: { $exists: false } }
+                ]
+            })
+            
+            console.log('[WorkspaceRepository] getManyByIds: Encontrados', workspaces.length, 'workspaces')
+            return workspaces
+        }
+        catch (error) {
+            console.error('[SERVER ERROR]: no se pudo obtener los workspaces por IDs', error)
+            console.error('[SERVER ERROR]: Stack trace:', error.stack)
+            console.error('[SERVER ERROR]: Error name:', error.name)
+            console.error('[SERVER ERROR]: Error message:', error.message)
+            throw error
+        }
+    }
 }
 
 export default WorkspaceRepository

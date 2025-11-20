@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const uri = `${process.env.MONGO_DB_CONNECTION_STRING}?retryWrites=true&w=majority`;
+const uri = process.env.MONGO_DB_CONNECTION_STRING;
 console.log("URI:", uri);
 export const connectToMongoDB = async () => {
   try {

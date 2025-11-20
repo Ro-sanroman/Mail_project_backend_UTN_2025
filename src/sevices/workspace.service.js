@@ -8,8 +8,29 @@ import jwt from 'jsonwebtoken'
 
 class WorkspaceService {
     static async getAll(user_id) {
-        const members = await MemberWorkspaceRepository.getAllByUserId(user_id)
-        return members
+        try {
+            console.log('[WorkspaceService] getAll - user_id:', user_id)
+            
+            // Obtener los IDs de workspace directamente sin populate
+            const workspace_ids = await MemberWorkspaceRepository.getWorkspaceIdsByUserId(user_id)
+            console.log('[WorkspaceService] workspace_ids obtenidos:', workspace_ids?.length || 0)
+
+            // Si no hay IDs válidos, retornar array vacío
+            if (!workspace_ids || workspace_ids.length === 0) {
+                console.log('[WorkspaceService] No hay workspaces para el usuario')
+                return []
+            }
+
+            // Traer los workspaces reales
+            const workspaces = await WorkspaceRepository.getManyByIds(workspace_ids)
+            console.log('[WorkspaceService] workspaces obtenidos de DB:', workspaces?.length || 0)
+
+            return workspaces || []
+        } catch (error) {
+            console.error('[WorkspaceService] Error en getAll:', error)
+            console.error('[WorkspaceService] Stack:', error.stack)
+            throw error
+        }
     }
 
     static async create(user_id, name, url_img) {
