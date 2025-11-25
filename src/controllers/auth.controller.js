@@ -3,20 +3,16 @@ import { ServerError } from "../error.js";
 import AuthService from "../sevices/auth.service.js";
 
 class AuthController {
-  // reemplazado: handler único, defensivo y consistente con AuthService.register({name,email,password})
   static async register (request, response){
     try{
       console.log('Registro recibido:', request.body);
 
-      // Normalizar y mapear explícitamente
       const name = request.body.name ?? request.body.username ?? request.body.user ?? '';
       const email = request.body.email ?? request.body.mail ?? '';
       const password = request.body.password ?? request.body.pass ?? '';
 
-      // Llamar pasando un objeto (evita errores por orden posicional)
       const result = await AuthService.register({ name, email, password });
 
-      // Responder con la estructura devuelta por el service
       return response.status(result.status || 201).json(result);
     }
     catch(error){
@@ -43,15 +39,12 @@ class AuthController {
       const { verification_token } = request.params;
 
       await AuthService.verifyEmail(verification_token);
-      // Si la petición viene de un navegador (click desde mail) redirigimos al frontend,
-      // si viene por API (Accept: application/json) devolvemos JSON
       const accept = request.headers.accept || ''
       if (accept.includes('application/json')) {
         return response.json({ ok: true, message: 'Email verificado', status: 200 })
       }
       return response.redirect(ENVIRONMENT.URL_FRONTEND + '/login?from=verified_email');
     } catch (error) {
-      // Devolver JSON cuando corresponda para evitar que el cliente intente parsear HTML
       const accept = request.headers.accept || ''
       if (error.status) {
         if (accept.includes('application/json')) {

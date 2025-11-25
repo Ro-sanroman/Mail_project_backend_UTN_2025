@@ -3,11 +3,6 @@ import MemberWorkspaceRepository from "../repositories/memberWorkspace.repositor
 import WorkspaceRepository from "../repositories/workspace.repository.js"
 
 
-/* 
-Checkear que el workspace con x ID exista
-Checkear si el cliente es un miembro de ese workspace
-Checkear si el miembro cuenta con el rol permitido
-*/
 function workspaceMiddleware(valid_member_roles = []) {
     return async function (request, response, next) {
         try {
@@ -18,29 +13,24 @@ function workspaceMiddleware(valid_member_roles = []) {
             console.log('[workspaceMiddleware] workspace_id recibido:', workspace_id)
             console.log('[workspaceMiddleware] user.id:', user.id)
 
-            //Checkear que el workspace con x ID exista
             const workspace_selected = await WorkspaceRepository.getById(workspace_id)
             console.log('[workspaceMiddleware] workspace_selected:', workspace_selected ? 'ENCONTRADO' : 'NO ENCONTRADO')
             if (!workspace_selected) {
                 throw new ServerError(404, 'Workspace no encontrado')
             }
 
-            //Checkear si el cliente es un miembro de ese workspace
             const member = await MemberWorkspaceRepository.getByUserIdAndWorkspaceId(user.id, workspace_id)
             console.log('[workspaceMiddleware] member:', member ? 'ENCONTRADO' : 'NO ENCONTRADO')
             if (!member) {
                 throw new ServerError(403, 'No tienes acceso a este espacio de trabajo')
             }
 
-            //Checkear si el miembro cuenta con el rol permitido
             if (valid_member_roles.length > 0 && !valid_member_roles.includes(member.role)) {
                 throw new ServerError(403, 'No puedes esta operacion')
             }
-
-            //Guardamos en la request los datos del miembro
+o
             request.member = member
 
-            //Guardamos en la request los datos del espacio de trabajo
             request.workspace_selected = workspace_selected
             next()
         }
@@ -67,10 +57,3 @@ function workspaceMiddleware(valid_member_roles = []) {
 }
 
 export default workspaceMiddleware
-/*
-TODOS los middlewares deben recibir a request, response, next
-*/
-
-//workspaceMiddleware(['admin']) //Deje pasar al admin
-//workspaceMiddleware(['admin', 'user']) //Deje pasar al admin y al user
-//workspaceMiddleware() //Deje pasar a todos

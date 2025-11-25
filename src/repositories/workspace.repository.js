@@ -56,7 +56,6 @@ class WorkspaceRepository {
     }
     static async getManyByIds(workspace_ids) {
         try {
-            // Si no hay IDs, retornar array vacío
             if (!workspace_ids || workspace_ids.length === 0) {
                 console.log('[WorkspaceRepository] getManyByIds: No hay IDs, retornando array vacío')
                 return []
@@ -65,14 +64,9 @@ class WorkspaceRepository {
             console.log('[WorkspaceRepository] getManyByIds: Buscando', workspace_ids.length, 'workspaces')
             console.log('[WorkspaceRepository] getManyByIds: IDs recibidos:', workspace_ids)
             
-            // Asegurarse de que los IDs sean válidos ObjectIds de MongoDB
-            // Convertir a string y luego validar si es necesario
             const validIds = workspace_ids
                 .filter(id => id != null && id !== undefined)
                 .map(id => {
-                    // Si es un ObjectId de Mongoose, mantenerlo como está
-                    // Si es un string, Mongoose lo convertirá automáticamente
-                    return id
                 })
             
             if (validIds.length === 0) {

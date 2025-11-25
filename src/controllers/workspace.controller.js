@@ -13,7 +13,6 @@ class WorkspaceController {
   static async getAll(request, response) {
     try {
       console.log("USER EN REQUEST:", request.user);
-      //Muestro los datos de sesion del usuario
       const user = request.user;
 
       if (!user || !user.id) {
@@ -26,13 +25,10 @@ class WorkspaceController {
       }
 
       console.log("Obteniendo workspaces para user_id:", user.id);
-      //Necesito saber el user_id del cliente para saber exactamente quien es y que lista debo darle
       const workspaces = await WorkspaceService.getAll(user.id);
       console.log("Workspaces obtenidos:", workspaces?.length || 0);
 
-      // Formatear los workspaces para que coincidan con lo que espera el frontend
       const workspacesFormatted = (workspaces || []).map(workspace => {
-        // Convertir ObjectId a string si es necesario
         const workspaceId = workspace._id ? (workspace._id.toString ? workspace._id.toString() : workspace._id) : null;
         return {
           workspace_id: workspaceId,
@@ -153,29 +149,7 @@ class WorkspaceController {
         message: "Invitacion enviada",
         ok: true,
       });
-      /* 
-                - Verificar que exista un usuario (EN LA DB) con el email_invited
-                    Por?: Hay que checkear que el usuario invitado existe
-                    EJEMPLO: Los invito a un grupo de wsp y ustedes no tienen wsp
-                    Sino existe tirar error 404
-                
-                - Verificar que YA NO ESTE en el workspace, sino seria un miembro duplicado
-
-                - Generar un token con: 
-                {
-                    id_invited,
-                    id_inviter,
-                    id_workspace,
-                    invited_role
-                }
-                
-                - Enviar el mail de invitacion
-                    Ejemplo: 
-                        `
-                        <h1>Has sido invitado al workspace: ${workspace_select.name}</h1>
-                        <a href="${URL_FRONTEND}/api/member/confirm/${invite_token}"">Aceptar</a>
-                        `
-            */
+      
     } catch (error) {
       if (error.status) {
         return response.status(error.status).json({

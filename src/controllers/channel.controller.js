@@ -5,14 +5,12 @@ class ChannelController {
         try {
             const { workspace_selected } = request;
             const { name } = request.body;
-            // Validar nombre de canal ok
             if (!name) {
                 return response.status(400).json({
                     ok: false,
                     message: 'El nombre del canal es requerido',
                 });
             }
-            // Crear el canal usando .createChannel
             const channel_list = await ChannelService.create(workspace_selected.id, name);
             response.status(201).json({
                 ok: true,

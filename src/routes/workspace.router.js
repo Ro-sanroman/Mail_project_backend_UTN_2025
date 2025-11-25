@@ -8,17 +8,6 @@ import ChannelController from '../controllers/channel.controller.js'
 import MessagesController from '../controllers/message.controller.js'
 
 const workspaceRouter = express.Router()
-
-
-/* workspaceRouter.get(
-    '/all',
-    WorkspaceController.getAll
-) */
-
-
-/* 
-Obtener la lista de espacios de trabajo DEL CLIENTE QUE ME ESTE CONSULTANDO
-*/
 workspaceRouter.get(
     '/',
     authMiddleware,
@@ -39,22 +28,6 @@ workspaceRouter.delete(
     WorkspaceController.delete
 )
 
-// POST /workspaces/:workspace_id/channels (Solo admins)
-/* 
-body: {
-    name
-}
-- Crear un nuevo canal
-*/
-
-// GET /workspaces/:workspace_id
-/* 
-- Obtener los detalles de un espacio de trabajo
-- Cargar la lista de canales de un espacio de trabajo
-*/
-
-
-// GET /api/workspace/:workspace_id - Obtener detalles del workspace por ID
 workspaceRouter.get(
     '/:workspace_id',
     authMiddleware,
@@ -72,7 +45,7 @@ workspaceRouter.get(
 workspaceRouter.post(
     '/:workspace_id/channels',
     authMiddleware,
-    workspaceMiddleware(['admin']), // => Solo miembros con rol de administrador pueden crear canales
+    workspaceMiddleware(['admin']), 
     ChannelController.create
 )
 
@@ -84,11 +57,6 @@ workspaceRouter.delete(
     ChannelController.delete
 )
 
-//CONSIGNA:
-//Crear los controladores para crear mensajes y obtener mensajes
-//Siempre que se cree o obtenga la lista el servidor debera responder con la lista de mensajes
-
-//Crear mensajes
 workspaceRouter.post(
     '/:workspace_id/channels/:channel_id/messages',
     authMiddleware,
@@ -96,7 +64,7 @@ workspaceRouter.post(
     channelMiddleware,
     MessagesController.create
 )
-//Obtener mensajes
+
 workspaceRouter.get(
     '/:workspace_id/channels/:channel_id/messages',
     authMiddleware,
@@ -112,23 +80,6 @@ workspaceRouter.delete(
     channelMiddleware,
     MessagesController.delete
 )
-
-
-/*workspaceRouter.get(
-    '/:workspace_id/test',
-    authMiddleware,
-    workspaceMiddleware(),
-    (request, response) => {
-        console.log(request.workspace_selected)
-        console.log(request.member)
-        response.json({
-            ok: true,
-            status: 200,
-            message: 'test'
-        })
-    }
-)
-*/
 
 workspaceRouter.post(
     '/:workspace_id/invite', 

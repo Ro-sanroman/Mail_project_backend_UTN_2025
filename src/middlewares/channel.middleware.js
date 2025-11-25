@@ -1,12 +1,3 @@
-/* 
-Se antepondra en las consultas hacia
-/api/workspace/:workspace_id/channel/:channel_id
-
-Responsabilidades:
-    - Verificar que exista el channel en DB y pertenezca al workspace
-    - Guardar el channel_selected dentro de el objeto request
-*/
-
 import ChannelRepository from "../repositories/channel.repository.js"
 import { ServerError } from "../error.js"
 

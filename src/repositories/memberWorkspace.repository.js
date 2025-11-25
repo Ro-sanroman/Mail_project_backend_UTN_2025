@@ -60,11 +60,8 @@ class MemberWorkspaceRepository {
 
     static async getAllByUserId(user_id){
         try {
-            //.populate nos permite expandir los datos de una referencia
             const members = await MemberWorkspace.find({id_user: user_id}).populate('id_workspace')
 
-            /* Dar formato a la respuesta, ya que mongoose nos da los datos pero desordenados */
-            // Filtrar miembros donde el workspace existe (no es null) y está activo
             const members_list_formatted = members
                 .filter(member => member.id_workspace && member.id_workspace.active !== false)
                 .map(
@@ -95,7 +92,6 @@ class MemberWorkspaceRepository {
     static async getWorkspaceIdsByUserId(user_id){
         try {
             console.log('[MemberWorkspaceRepository] getWorkspaceIdsByUserId - user_id:', user_id)
-            // Obtener solo los IDs de workspace sin populate para evitar problemas
             const members = await MemberWorkspace.find({id_user: user_id}).select('id_workspace').lean()
             console.log('[MemberWorkspaceRepository] Members encontrados:', members?.length || 0)
             

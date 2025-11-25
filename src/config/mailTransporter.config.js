@@ -8,11 +8,10 @@ console.log('[MAIL CONFIG] ENV vars:', {
   PORT: ENVIRONMENT.PORT ?? 'no-port'
 })
 
-// Use explicit smtp config and pooling for more reliable deliveries
 const mailTransporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
-  secure: true, // use TLS
+  secure: true, 
   pool: true,
   maxConnections: 5,
   maxMessages: 100,
@@ -27,7 +26,6 @@ const mailTransporter = nodemailer.createTransport({
   }
 })
 
-// Añadir verify con logs más verbosos
 mailTransporter.verify()
   .then(() => {
     console.log('Mail transporter conectado y listo')

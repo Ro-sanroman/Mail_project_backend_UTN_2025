@@ -8,7 +8,6 @@ const memberWorkspaceSchema =  new mongoose.Schema(
             required: true
         },
         id_workspace: {
-            //id_workspace sera un id de mongoDB
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Workspace',
             required: true

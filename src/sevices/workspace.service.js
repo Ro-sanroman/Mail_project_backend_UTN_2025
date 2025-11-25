@@ -13,17 +13,14 @@ class WorkspaceService {
         try {
             console.log('[WorkspaceService] getAll - user_id:', user_id)
             
-            // Obtener los IDs de workspace directamente sin populate
             const workspace_ids = await MemberWorkspaceRepository.getWorkspaceIdsByUserId(user_id)
             console.log('[WorkspaceService] workspace_ids obtenidos:', workspace_ids?.length || 0)
 
-            // Si no hay IDs válidos, retornar array vacío
             if (!workspace_ids || workspace_ids.length === 0) {
                 console.log('[WorkspaceService] No hay workspaces para el usuario')
                 return []
             }
 
-            // Traer los workspaces reales
             const workspaces = await WorkspaceRepository.getManyByIds(workspace_ids)
             console.log('[WorkspaceService] workspaces obtenidos de DB:', workspaces?.length || 0)
 
@@ -37,10 +34,8 @@ class WorkspaceService {
 
     static async create(user_id, name, url_img) {
 
-        //Crear el espacio de trabajo 
         const workspace_created = await WorkspaceRepository.create(name, url_img)
 
-        //Crear al miembro con role de  admin (Creador del workspace)
         await MemberWorkspaceRepository.create(user_id, workspace_created._id, 'admin')
 
         return workspace_created
