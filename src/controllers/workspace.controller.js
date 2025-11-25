@@ -109,6 +109,34 @@ class WorkspaceController {
     }
   }
 
+  static async delete(request, response) {
+    try {
+      const { workspace_selected } = request;
+      await WorkspaceService.delete(workspace_selected._id);
+
+      return response.status(200).json({
+        ok: true,
+        status: 200,
+        message: "Workspace eliminado con exito",
+      });
+    } catch (error) {
+      if (error.status) {
+        return response.status(error.status).json({
+          ok: false,
+          message: error.message,
+          status: error.status,
+        });
+      } else {
+        console.error("ERROR AL eliminar workspace", error);
+        return response.status(500).json({
+          ok: false,
+          message: "Error interno del servidor",
+          status: 500,
+        });
+      }
+    }
+  }
+
   static async invite(request, response) {
     try {
       const { member, workspace_selected, user } = request;

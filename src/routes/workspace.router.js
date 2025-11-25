@@ -32,6 +32,13 @@ workspaceRouter.post(
     WorkspaceController.create
 )
 
+workspaceRouter.delete(
+    '/:workspace_id',
+    authMiddleware,
+    workspaceMiddleware(['admin']),
+    WorkspaceController.delete
+)
+
 // POST /workspaces/:workspace_id/channels (Solo admins)
 /* 
 body: {
@@ -69,6 +76,14 @@ workspaceRouter.post(
     ChannelController.create
 )
 
+workspaceRouter.delete(
+    '/:workspace_id/channels/:channel_id',
+    authMiddleware,
+    workspaceMiddleware(['admin']),
+    channelMiddleware,
+    ChannelController.delete
+)
+
 //CONSIGNA:
 //Crear los controladores para crear mensajes y obtener mensajes
 //Siempre que se cree o obtenga la lista el servidor debera responder con la lista de mensajes
@@ -88,6 +103,14 @@ workspaceRouter.get(
     workspaceMiddleware(),
     channelMiddleware,
     MessagesController.getAllByChannelId
+)
+
+workspaceRouter.delete(
+    '/:workspace_id/channels/:channel_id/messages/:message_id',
+    authMiddleware,
+    workspaceMiddleware(),
+    channelMiddleware,
+    MessagesController.delete
 )
 
 

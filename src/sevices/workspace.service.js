@@ -4,6 +4,8 @@ import { ServerError } from "../error.js"
 import MemberWorkspaceRepository from "../repositories/memberWorkspace.repository.js"
 import UserRepository from "../repositories/user.repository.js"
 import WorkspaceRepository from "../repositories/workspace.repository.js"
+import ChannelRepository from "../repositories/channel.repository.js"
+import MessagesChannelRepository from "../repositories/messageChannel.repository.js"
 import jwt from 'jsonwebtoken'
 
 class WorkspaceService {
@@ -78,6 +80,21 @@ class WorkspaceService {
                         <a href="${ENVIRONMENT.URL_BACKEND}/api/member/confirm/${invitation_token}">Aceptar</a>
                         `
         })
+    }
+
+    static async delete(workspace_id) {
+        const channels = await ChannelRepository.getAllByWorkspaceId(workspace_id) || []
+        const channelIds = channels.map(channel => channel._id)
+
+        if (channelIds.length > 0) {
+            await MessagesChannelRepository.deleteManyByChannelIds(channelIds)
+            await ChannelRepository.deleteManyByWorkspaceId(workspace_id)
+        } else {
+            await ChannelRepository.deleteManyByWorkspaceId(workspace_id)
+        }
+
+        await MemberWorkspaceRepository.deleteManyByWorkspaceId(workspace_id)
+        await WorkspaceRepository.deleteById(workspace_id)
     }
 
 }

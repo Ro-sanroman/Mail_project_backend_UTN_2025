@@ -80,5 +80,18 @@ class MessagesChannelRepository{
         )
         return messages_formatted
     }
+
+    static async deleteManyByChannelIds(channel_ids){
+        try{
+            if(!channel_ids || channel_ids.length === 0){
+                return
+            }
+            await MessageChannel.deleteMany({ channel_id: { $in: channel_ids } })
+        }
+        catch(error){
+            console.error('[SERVER ERROR]: no se pudieron eliminar los mensajes de los canales', error)
+            throw error
+        }
+    }
 }
 export default MessagesChannelRepository

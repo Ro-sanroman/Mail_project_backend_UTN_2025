@@ -30,6 +30,35 @@ class ChannelController {
             });
         }
     }
+
+    static async delete(request, response) {
+        try {
+            const { workspace_selected, channel_selected } = request;
+            const channel_list = await ChannelService.delete(workspace_selected._id, channel_selected._id);
+            return response.status(200).json({
+                ok: true,
+                message: 'Canal eliminado',
+                status: 200,
+                data: {
+                    channels: channel_list
+                }
+            });
+        } catch (error) {
+            if (error.status) {
+                return response.status(error.status).json({
+                    ok: false,
+                    message: error.message,
+                    status: error.status
+                });
+            }
+            console.error('Error al eliminar canal', error);
+            return response.status(500).json({
+                ok: false,
+                message: 'Error interno del servidor',
+                status: 500
+            });
+        }
+    }
 }
 
 

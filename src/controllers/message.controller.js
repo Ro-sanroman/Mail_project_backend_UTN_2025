@@ -74,6 +74,39 @@ class MessagesController {
             }
         }
     }
+
+    static async delete(request, response){
+        try{
+            const { member } = request
+            const { message_id, channel_id } = request.params
+            const { messages } = await MessageService.delete(message_id, member, channel_id)
+            return response.status(200).json({
+                ok: true,
+                status: 200,
+                message: "Message eliminado",
+                data: {
+                    messages
+                }
+            })
+        }
+        catch(error){
+            if(error.status){
+                return response.status(error.status).json({
+                    ok:false,
+                    message: error.message,
+                    status: error.status
+                })
+            }
+            else{
+                console.error('ERROR AL eliminar mensaje', error)
+                return response.status(500).json({
+                    ok: false,
+                    message: 'Error interno del servidor',
+                    status: 500
+                })
+            }
+        }
+    }
 }
 
 export default MessagesController

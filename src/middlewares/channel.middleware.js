@@ -8,6 +8,7 @@ Responsabilidades:
 */
 
 import ChannelRepository from "../repositories/channel.repository.js"
+import { ServerError } from "../error.js"
 
 async function channelMiddleware(request, response, next) {
     try {

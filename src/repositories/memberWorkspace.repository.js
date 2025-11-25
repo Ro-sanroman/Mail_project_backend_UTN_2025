@@ -116,6 +116,16 @@ class MemberWorkspaceRepository {
             throw error
         }
     }
+
+    static async deleteManyByWorkspaceId(workspace_id){
+        try{
+            await MemberWorkspace.deleteMany({ id_workspace: workspace_id })
+        }
+        catch(error){
+            console.error('[SERVER ERROR]: no se pudo eliminar miembros del workspace', error)
+            throw error
+        }
+    }
 }
 
 

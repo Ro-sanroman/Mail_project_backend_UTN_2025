@@ -77,5 +77,15 @@ class ChannelRepository {
             throw error
         }
     }
+
+    static async deleteManyByWorkspaceId(workspace_id){
+        try{
+            await Channel.deleteMany({ id_workspace: workspace_id })
+        }
+        catch(error){
+            console.error('[SERVER ERROR]: no se pudieron eliminar los channels del workspace', error)
+            throw error
+        }
+    }
 }
 export default ChannelRepository
