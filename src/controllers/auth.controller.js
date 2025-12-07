@@ -39,11 +39,16 @@ class AuthController {
       const { verification_token } = request.params;
 
       await AuthService.verifyEmail(verification_token);
+      
+      const redirectUrl = ENVIRONMENT.URL_FRONTEND + '/login?from=verified_email';
+      console.log('[AUTH CONTROLLER] URL_FRONTEND:', ENVIRONMENT.URL_FRONTEND);
+      console.log('[AUTH CONTROLLER] Redirigiendo a:', redirectUrl);
+      
       const accept = request.headers.accept || ''
       if (accept.includes('application/json')) {
         return response.json({ ok: true, message: 'Email verificado', status: 200 })
       }
-      return response.redirect(ENVIRONMENT.URL_FRONTEND + '/login?from=verified_email');
+      return response.redirect(redirectUrl);
     } catch (error) {
       const accept = request.headers.accept || ''
       if (error.status) {

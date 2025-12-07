@@ -9,6 +9,8 @@ import jwt from "jsonwebtoken";
 class AuthService {
     static async register({ name, email, password }) {
     console.log('AuthService.register payload:', { name, email, password });
+    console.log('[AUTH SERVICE] URL_BACKEND:', ENVIRONMENT.URL_BACKEND);
+    console.log('[AUTH SERVICE] URL_FRONTEND:', ENVIRONMENT.URL_FRONTEND);
 
     if (!email || !password) {
       throw new ServerError(400, 'Email y password son obligatorios');
@@ -42,6 +44,8 @@ class AuthService {
     const verification_token = jwt.sign({ user_id: user_id_created }, ENVIRONMENT.JWT_SECRET);
 
     const verificationLink = `${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email/${verification_token}`;
+    console.log('[AUTH SERVICE] verificationLink generado:', verificationLink);
+    
     const mailOptions = {
       from: ENVIRONMENT.GMAIL_USER,
       to: email,

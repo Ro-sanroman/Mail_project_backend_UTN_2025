@@ -21,6 +21,8 @@ connectToMongoDB().catch(err => log('[STARTUP ERROR] ' + err))
 app.use( cors() )
 
 log('ENV CHECK: JWT_SECRET presente? ' + !!ENVIRONMENT.JWT_SECRET)
+log('ENV CHECK: URL_FRONTEND = ' + ENVIRONMENT.URL_FRONTEND)
+log('ENV CHECK: URL_BACKEND = ' + ENVIRONMENT.URL_BACKEND)
 
 
 app.use(express.json())
