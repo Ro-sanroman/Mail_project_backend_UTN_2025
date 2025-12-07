@@ -153,3 +153,47 @@ Servidor corriendo en puerto 8080
 ENV CHECK: JWT_SECRET presente? true
 [STARTUP] NODE_ENV = undefined, PORT = 8080
 Servidor corriendo en puerto 8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+[SERVER ERROR] Error: listen EADDRINUSE: address already in use :::8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+[SERVER ERROR] Error: listen EADDRINUSE: address already in use :::8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+[SERVER ERROR] Error: listen EADDRINUSE: address already in use :::8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+[SERVER ERROR] Error: listen EADDRINUSE: address already in use :::8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+[SERVER ERROR] Error: listen EADDRINUSE: address already in use :::8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+ENV CHECK: JWT_SECRET presente? true
+[STARTUP] NODE_ENV = undefined, PORT = 8080
+Servidor corriendo en puerto 8080
+[PETICION RECIBIDA] GET /api/workspace
+[PETICION RECIBIDA] POST /api/workspace
+[PETICION RECIBIDA] GET /api/workspace
+[PETICION RECIBIDA] GET /api/workspace/6935dd67728f5ec3a7b3d562/channels
+[PETICION RECIBIDA] POST /api/workspace/6935dd67728f5ec3a7b3d562/channels
+[PETICION RECIBIDA] GET /api/workspace/6935dd67728f5ec3a7b3d562/channels
+[PETICION RECIBIDA] GET /api/workspace/6935dd67728f5ec3a7b3d562/channels/6935e50fcfb86b0d2b94831d/messages
+[PETICION RECIBIDA] POST /api/workspace/6935dd67728f5ec3a7b3d562/channels/6935e50fcfb86b0d2b94831d/messages
+[PETICION RECIBIDA] GET /api/workspace/6935dd67728f5ec3a7b3d562/channels/6935e50fcfb86b0d2b94831d/messages
+[PETICION RECIBIDA] DELETE /api/workspace/6935dd67728f5ec3a7b3d562/channels/6935e50fcfb86b0d2b94831d
+[PETICION RECIBIDA] GET /api/workspace/6935dd67728f5ec3a7b3d562/channels
+[PETICION RECIBIDA] GET /api/workspace/6935dd67728f5ec3a7b3d562/channels/6935e50fcfb86b0d2b94831d/messages
+[PETICION RECIBIDA] GET /api/workspace
+[PETICION RECIBIDA] DELETE /api/workspace/6935dd67728f5ec3a7b3d562
+[PETICION RECIBIDA] GET /api/workspace

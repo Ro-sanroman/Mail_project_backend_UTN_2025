@@ -1,11 +1,11 @@
 import Workspace from "../models/Workspace.model.js";
 
 class WorkspaceRepository {
-    static async create(name, url_image) {
+    static async create(name, url_img) {
         try {
             const newWorkspace = await Workspace.create({
                 name: name,
-                url_image: url_image
+                url_img: url_img
             })
             return newWorkspace
         }
@@ -66,8 +66,6 @@ class WorkspaceRepository {
             
             const validIds = workspace_ids
                 .filter(id => id != null && id !== undefined)
-                .map(id => {
-                })
             
             if (validIds.length === 0) {
                 console.log('[WorkspaceRepository] getManyByIds: No hay IDs válidos después del filtrado')

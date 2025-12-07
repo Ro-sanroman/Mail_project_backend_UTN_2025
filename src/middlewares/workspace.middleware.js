@@ -28,9 +28,8 @@ function workspaceMiddleware(valid_member_roles = []) {
             if (valid_member_roles.length > 0 && !valid_member_roles.includes(member.role)) {
                 throw new ServerError(403, 'No puedes esta operacion')
             }
-o
-            request.member = member
 
+            request.member = member
             request.workspace_selected = workspace_selected
             next()
         }

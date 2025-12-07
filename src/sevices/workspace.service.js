@@ -13,18 +13,16 @@ class WorkspaceService {
         try {
             console.log('[WorkspaceService] getAll - user_id:', user_id)
             
-            const workspace_ids = await MemberWorkspaceRepository.getWorkspaceIdsByUserId(user_id)
-            console.log('[WorkspaceService] workspace_ids obtenidos:', workspace_ids?.length || 0)
+            const members = await MemberWorkspaceRepository.getAllByUserId(user_id)
+            console.log('[WorkspaceService] members obtenidos:', members?.length || 0)
 
-            if (!workspace_ids || workspace_ids.length === 0) {
+            if (!members || members.length === 0) {
                 console.log('[WorkspaceService] No hay workspaces para el usuario')
                 return []
             }
 
-            const workspaces = await WorkspaceRepository.getManyByIds(workspace_ids)
-            console.log('[WorkspaceService] workspaces obtenidos de DB:', workspaces?.length || 0)
-
-            return workspaces || []
+            // Los miembros ya vienen con los datos del workspace formateados
+            return members
         } catch (error) {
             console.error('[WorkspaceService] Error en getAll:', error)
             console.error('[WorkspaceService] Stack:', error.stack)
@@ -33,10 +31,13 @@ class WorkspaceService {
     }
 
     static async create(user_id, name, url_img) {
-
+        console.log('[WorkspaceService] create - user_id:', user_id, 'name:', name)
+        
         const workspace_created = await WorkspaceRepository.create(name, url_img)
+        console.log('[WorkspaceService] workspace_created:', workspace_created._id)
 
         await MemberWorkspaceRepository.create(user_id, workspace_created._id, 'admin')
+        console.log('[WorkspaceService] MemberWorkspace creado para user_id:', user_id, 'workspace_id:', workspace_created._id)
 
         return workspace_created
     }

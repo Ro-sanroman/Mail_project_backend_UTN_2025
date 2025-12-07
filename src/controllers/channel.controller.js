@@ -11,7 +11,7 @@ class ChannelController {
                     message: 'El nombre del canal es requerido',
                 });
             }
-            const channel_list = await ChannelService.create(workspace_selected.id, name);
+            const channel_list = await ChannelService.create(workspace_selected._id, name);
             response.status(201).json({
                 ok: true,
                 message: 'Canal creado',

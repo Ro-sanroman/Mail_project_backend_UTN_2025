@@ -12,11 +12,12 @@ import jwt from "jsonwebtoken";
 class WorkspaceController {
   static async getAll(request, response) {
     try {
-      console.log("USER EN REQUEST:", request.user);
+      console.log("\n[WorkspaceController.getAll] ========== INICIANDO ==========");
+      console.log("[WorkspaceController.getAll] USER EN REQUEST:", request.user);
       const user = request.user;
 
       if (!user || !user.id) {
-        console.error("ERROR: Usuario no encontrado en request");
+        console.error("[WorkspaceController.getAll] ERROR: Usuario no encontrado en request");
         return response.status(401).json({
           ok: false,
           message: "Usuario no autenticado",
@@ -24,26 +25,20 @@ class WorkspaceController {
         });
       }
 
-      console.log("Obteniendo workspaces para user_id:", user.id);
+      console.log("[WorkspaceController.getAll] user.id:", user.id);
+      console.log("[WorkspaceController.getAll] user.id type:", typeof user.id);
+      console.log("[WorkspaceController.getAll] Obteniendo workspaces para user_id:", user.id);
       const workspaces = await WorkspaceService.getAll(user.id);
-      console.log("Workspaces obtenidos:", workspaces?.length || 0);
+      console.log("[WorkspaceController.getAll] Workspaces obtenidos:", workspaces?.length || 0);
+      console.log("[WorkspaceController.getAll] Workspaces:", JSON.stringify(workspaces, null, 2));
 
-      const workspacesFormatted = (workspaces || []).map(workspace => {
-        const workspaceId = workspace._id ? (workspace._id.toString ? workspace._id.toString() : workspace._id) : null;
-        return {
-          workspace_id: workspaceId,
-          workspace_name: workspace.name || '',
-          workspace_created_at: workspace.created_at || null,
-          workspace_url_image: workspace.url_img || null
-        };
-      });
-
+      // El servicio ya devuelve los workspaces formateados desde MemberWorkspaceRepository.getAllByUserId
       response.status(200).json({
         ok: true,
         status: 200,
         message: "Espacios de trabajo obtenidos exitosamente",
         data: {
-          workspaces: workspacesFormatted,
+          workspaces: workspaces || [],
         },
       });
     } catch (error) {
@@ -70,8 +65,14 @@ class WorkspaceController {
   }
   static async create(request, response) {
     try {
+      console.log("\n[WorkspaceController.create] ========== INICIANDO ==========");
       const user = request.user;
+      console.log("[WorkspaceController.create] user:", user);
+      console.log("[WorkspaceController.create] user.id:", user.id);
+      console.log("[WorkspaceController.create] user.id type:", typeof user.id);
+      
       const { name, url_img } = request.body;
+      console.log("[WorkspaceController.create] name:", name);
 
       const workspace_created = await WorkspaceService.create(
         user.id,
@@ -79,12 +80,20 @@ class WorkspaceController {
         url_img
       );
 
+      console.log("[WorkspaceController.create] workspace_created._id:", workspace_created._id);
+      console.log("[WorkspaceController.create] Workspace creado exitosamente");
+
       response.status(201).json({
         status: 201,
         ok: true,
         message: "Workspace creado con exito",
         data: {
-          workspace_created,
+          workspace: {
+            workspace_id: workspace_created._id.toString(),
+            workspace_name: workspace_created.name,
+            workspace_created_at: workspace_created.created_at,
+            workspace_url_image: workspace_created.url_img
+          }
         },
       });
     } catch (error) {
@@ -95,7 +104,7 @@ class WorkspaceController {
           status: error.status,
         });
       } else {
-        console.error("ERROR AL OBTENER LOS WORKSPACES", error);
+        console.error("ERROR AL CREAR WORKSPACE", error);
         return response.status(500).json({
           ok: false,
           message: "Error interno del servidor",
