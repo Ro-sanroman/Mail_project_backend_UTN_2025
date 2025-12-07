@@ -215,3 +215,5 @@ Servidor corriendo en puerto 8080
 [PETICION RECIBIDA] GET /api/workspace
 [PETICION RECIBIDA] POST /api/auth/login
 [PETICION RECIBIDA] POST /api/auth/register
+[UNCAUGHT EXCEPTION] ReferenceError: error is not defined
+[UNCAUGHT EXCEPTION] ReferenceError: error is not defined
