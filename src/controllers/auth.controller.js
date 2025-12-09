@@ -40,7 +40,7 @@ class AuthController {
 
       await AuthService.verifyEmail(verification_token);
       
-      const redirectUrl = ENVIRONMENT.URL_FRONTEND + '/login?from=verified_email';
+      const redirectUrl = ENVIRONMENT.URL_FRONTEND + '/mail-project-frontend-utn-2025.vercel.app';
       console.log('[AUTH CONTROLLER] URL_FRONTEND:', ENVIRONMENT.URL_FRONTEND);
       console.log('[AUTH CONTROLLER] Redirigiendo a:', redirectUrl);
       

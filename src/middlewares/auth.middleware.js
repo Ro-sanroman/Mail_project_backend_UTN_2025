@@ -3,7 +3,7 @@ import { ServerError } from "../error.js"
 import jwt from 'jsonwebtoken'
 
 function authMiddleware(request, response, next) {
-    console.log('\n[authMiddleware] ========== INICIANDO ==========')
+    console.log('\n[authMiddleware] === INICIANDO ===')
     try {
         const auth_header = request.headers.authorization
         console.log('[authMiddleware] auth_header recibido:', auth_header ? 'YES' : 'NO')
