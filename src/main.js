@@ -33,7 +33,16 @@ app.use((req, res, next) => {
 
 app.get('/api/test', (req, res) => {
   console.log('[TEST] GET /api/test - Server is responding!')
-  res.json({ ok: true, message: 'Server is running', timestamp: new Date() })
+  res.json({ 
+    ok: true, 
+    message: 'Server is running', 
+    timestamp: new Date(),
+    environment: {
+      URL_FRONTEND: ENVIRONMENT.URL_FRONTEND,
+      URL_BACKEND: ENVIRONMENT.URL_BACKEND,
+      NODE_ENV: process.env.NODE_ENV
+    }
+  })
 })
 
 app.use('/api/auth', authRouter)
