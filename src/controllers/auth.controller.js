@@ -35,35 +35,31 @@ class AuthController {
   }
 
   static async verifyEmail(request, response) {
-    try {
-      const { verification_token } = request.params;
+  try {
+    const { verification_token } = request.params;
 
-      await AuthService.verifyEmail(verification_token);
-      
-      const redirectUrl = ENVIRONMENT.URL_FRONTEND + '/mail-project-frontend-utn-2025.vercel.app';
-      console.log('[AUTH CONTROLLER] URL_FRONTEND:', ENVIRONMENT.URL_FRONTEND);
-      console.log('[AUTH CONTROLLER] Redirigiendo a:', redirectUrl);
-      
-      const accept = request.headers.accept || ''
+    await AuthService.verifyEmail(verification_token);
+    
+    const redirectUrl = ENVIRONMENT.URL_FRONTEND + '/mail-project-frontend-utn-2025.vercel.app';
+    console.log('[AUTH CONTROLLER] URL_FRONTEND:', ENVIRONMENT.URL_FRONTEND);
+    console.log('[AUTH CONTROLLER] Redirigiendo a:', redirectUrl);
+    
+    return response.redirect(redirectUrl);
+  } catch (error) {
+    const accept = request.headers.accept || '';
+    if (error.status) {
       if (accept.includes('application/json')) {
-        return response.json({ ok: true, message: 'Email verificado', status: 200 })
+        return response.status(error.status).json({ ok: false, message: error.message, status: error.status });
       }
-      return response.redirect(redirectUrl);
-    } catch (error) {
-      const accept = request.headers.accept || ''
-      if (error.status) {
-        if (accept.includes('application/json')) {
-          return response.status(error.status).json({ ok: false, message: error.message, status: error.status })
-        }
-        return response.status(error.status).send(`<h1>${error.message}</h1>`);
-      }
-      console.error('ERROR AL VERIFICAR', error);
-      if (accept.includes('application/json')) {
-        return response.status(500).json({ ok: false, message: 'Error en el servidor, intentelo mas tarde', status: 500 })
-      }
-      return response.status(500).send(`<h1>Error en el servidor, intentelo mas tarde</h1>`);
+      return response.status(error.status).send(`<h1>${error.message}</h1>`);
     }
+    console.error('ERROR AL VERIFICAR', error);
+    if (accept.includes('application/json')) {
+      return response.status(500).json({ ok: false, message: 'Error en el servidor, intentelo mas tarde', status: 500 });
+    }
+    return response.status(500).send(`<h1>Error en el servidor, intentelo mas tarde</h1>`);
   }
+}
 
   static async login(request, response) {
     try {
